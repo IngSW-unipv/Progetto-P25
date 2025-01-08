@@ -10,6 +10,15 @@
 <project name="Proggeto" default="default" basedir=".">
     <description>Builds, tests, and runs the project Proggeto.</description>
     <import file="nbproject/build-impl.xml"/>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${build.dir}">
+            <classpath>
+                <!-- Incluye la carpeta lib con las dependencias -->
+                <fileset dir="lib" includes="*.jar"/>
+            </classpath>
+        </javac>
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 
