@@ -34,8 +34,15 @@ public class UINotes extends JFrame {
         JButton addNoteButton = new JButton("Aggiungi Nota");
         addNoteButton.addActionListener(e -> addNewNote(email, notesPanel));
 
+        // Botón para borrar una nota
+        JButton deleteNoteButton = new JButton("Elimina Nota");
+        deleteNoteButton.addActionListener(e -> deleteNote(email, notesPanel));
+
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(addNoteButton);
+        buttonPanel.add(deleteNoteButton);
         add(new JScrollPane(notesPanel), BorderLayout.CENTER);
-        add(addNoteButton, BorderLayout.SOUTH);
+        add(buttonPanel, BorderLayout.SOUTH);
 
         setVisible(true);
     }
@@ -72,6 +79,50 @@ public class UINotes extends JFrame {
             noteArea.setEditable(false);
             notesPanel.add(noteArea);
             notesPanel.revalidate();
+        }
+    }
+
+    private void deleteNote(String email, JPanel notesPanel) {
+        App app = new App();
+        List<Notes> userNotes = app.getUserNotes(email);
+
+        if(userNotes.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Titolo non trovato!", "Errore", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Mostrar un cuadro de diálogo para poder seleccionar la nota a eliminar
+        String[] titles = userNotes.stream().map(Notes::getTitle).toArray(String[]::new);
+        String titleToDelete = (String) JOptionPane.showInputDialog(
+                this,
+                "Seleziona la nota da eliminare:",
+                "Elimina Nota",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                titles,
+                titles[0]
+        );
+
+        if (titleToDelete != null) {
+            // Eliminar la nota del archivo JSON
+            app.deleteNotes(email, titleToDelete);
+
+            // Actualizar la interfaz eliminando la nota del panel
+            notesPanel.removeAll(); // Limpiar el panel
+
+            // Volver a cargar las notas del usuario
+            List<Notes> updatedNotes = app.getUserNotes(email);
+            for (Notes note : updatedNotes) {
+                JTextArea noteArea = new JTextArea();
+                noteArea.setText("Titolo: " + note.getTitle() + "\nContenuto: " + note.getContent());
+                noteArea.setEditable(false);
+                notesPanel.add(noteArea);
+            }
+
+            notesPanel.revalidate();
+            notesPanel.repaint();
+
+            JOptionPane.showMessageDialog(this, "Nota eliminata con successo.", "Successo", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }

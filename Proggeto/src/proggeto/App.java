@@ -224,5 +224,42 @@ public class App {
         }
     }
 
+    public void deleteNotes(String email, String title){
+        File file = new File(notesFile);
+
+
+        if (!file.exists()) {
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write("[]"); // Crear un JSON vacío
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
+        try(FileReader reader = new FileReader(file)){
+            JSONArray notes = (JSONArray) jsonParser.parse(reader);
+
+            boolean noteDeleted = notes.removeIf(noteObj -> {
+                JSONObject noteJson = (JSONObject) noteObj;
+                String noteAuthor = (String) noteJson.get("author");
+                String noteTitle = (String) noteJson.get("title");
+                return noteAuthor.equals(email) && noteTitle.equals(title);
+            });
+
+            if (noteDeleted){
+                try (FileWriter writer = new FileWriter(file)) {
+                    writer.write(notes.toJSONString());
+                    System.out.println("Eliminazione effettuata con successo.");
+                }
+            }else{
+                System.out.println("Nota not found ");
+            }
+
+        }catch (IOException | ParseException e){
+            e.printStackTrace();
+        }
+    }
+
 
 }
