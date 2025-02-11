@@ -1,12 +1,14 @@
 package proggeto;
 
 
-import ui.UI;
+import ui.*;
 import java.io.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+/*import ui.AdminFunctions.*;
+import ui.UINotes;*/
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -15,7 +17,10 @@ import java.util.List;
 public class App {
     //launching the app
     public void run(){
-        SwingUtilities.invokeLater(UI::new);
+        SwingUtilities.invokeLater(() -> {
+            UI ui = new UI();
+            ui.setVisible(true);
+        });
         addAdmin();
     }
 
@@ -106,7 +111,12 @@ public class App {
                 String storedEmail = (String) userJson.get("emailUser");
                 String storedPassword = (String) userJson.get("passwordUser");
 
-                if(storedEmail.equals(email)&& storedPassword.equals(password)){
+                if (storedEmail.equals(email) && storedPassword.equals(password)) {
+                    if (storedEmail.equals("admin@example.com")) {
+                        SwingUtilities.invokeLater(UIAdmin::new);
+                    } else {
+                        SwingUtilities.invokeLater(() -> new UINotes(email));
+                    }
                     return true;
                 }
             }
