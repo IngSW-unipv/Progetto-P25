@@ -15,7 +15,7 @@ public class AdminFunctions {
     private final String notesFile = "notes.json";
     private final JSONParser jsonParser = new JSONParser();
 
-    // Obtener la lista de todos los usuarios registrados
+
     public List<String> getAllUsers() {
         List<String> users = new ArrayList<>();
         File file = new File(usersFile);
@@ -35,7 +35,7 @@ public class AdminFunctions {
         return users;
     }
 
-    // Obtener las notas de un usuario específico
+
     public List<Notes> getUserNotes(String email) {
         List<Notes> notes = new ArrayList<>();
         File file = new File(notesFile);
@@ -83,7 +83,7 @@ public class AdminFunctions {
         }
     }
     */
-    // Verificar si un usuario es administrador
+
     public boolean isAdmin(String email) {
         return email.equals("admin@example.com");
     }

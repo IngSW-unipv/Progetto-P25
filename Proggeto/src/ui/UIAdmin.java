@@ -10,7 +10,7 @@ public class UIAdmin extends JFrame {
     public UIAdmin() {
         adminFunctions = new AdminFunctions();
 
-        setTitle("Admin - Lista de Usuarios");
+        setTitle("Admin - Users");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
