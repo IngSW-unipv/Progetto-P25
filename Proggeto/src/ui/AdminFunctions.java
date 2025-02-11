@@ -56,7 +56,7 @@ public class AdminFunctions {
         }
         return notes;
     }
-
+    /*
     // Eliminar una nota de cualquier usuario
     public void deleteUserNote(String email, String title) {
         File file = new File(notesFile);
@@ -82,7 +82,7 @@ public class AdminFunctions {
             e.printStackTrace();
         }
     }
-
+    */
     // Verificar si un usuario es administrador
     public boolean isAdmin(String email) {
         return email.equals("admin@example.com");
